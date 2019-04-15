@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
 import { Provider } from 'react-redux';
-import { createStore, applyMiddleware } from 'redux';
+import { createStore, applyMiddleware, compose } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 
 import reducers from './reducers';
@@ -18,7 +18,10 @@ axios.defaults.baseURL = 'http://rem-rest-api.herokuapp.com/api';
 
 const sagaMiddleware = createSagaMiddleware();
 
-const store = createStore(reducers, applyMiddleware(sagaMiddleware));
+// Redux dev tools
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
+const store = createStore(reducers, composeEnhancers(applyMiddleware(sagaMiddleware)));
 
 sagaMiddleware.run(rootSaga);
 
